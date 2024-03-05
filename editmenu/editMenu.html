@@ -130,22 +130,28 @@
         <div class="flex space-x-8">
             <div class="space-x-2">
                 <label for="">ราคา : </label>
-                <select class="inputinside2 rounded-full pr-6 pl-6 pt-1 pb-1 text-white" id="selection" onchange="showInput()">
+                <select class="inputinside2 rounded-full pr-6 pl-6 pt-1 pb-1 text-white" id="cupSize" onchange="showInput()">
                     <option class="inputinside text-black" value="">เลือกขนาด</option>
-                    <option class="inputinside text-black" value="size">12 oz.</option>
-                    <option class="inputinside text-black" value="size">16 oz.</option>
-                    <option class="inputinside text-black" value="size">20 oz.</option>
+                    <option class="inputinside text-black" value="12oz">12 oz.</option>
+                    <option class="inputinside text-black" value="16oz">16 oz.</option>
+                    <option class="inputinside text-black" value="20oz">20 oz.</option>
                 </select>
             </div>
 
-            <div id="inputField" class="pt-1">
-                <input class="rounded-full inputinside" type="text">
-            </div>
+            <form id="inputForm">
+                <input type="number" id="input1" class="hidden border border-black rounded-full p-1" placeholder="12oz">        
+                <input type="number" id="input2" class="hidden border border-black rounded-full p-1" placeholder="16oz">          
+                <input type="number" id="input3" class="hidden border border-black rounded-full p-1" placeholder="20oz">
+            </form>
         </div>
     </div>
 
-    <div>
+    <!-- <div>
         <button onclick="showPopup()" class="float-right mx-9 mt-8 bg-blue-400 hover:bg-blue-500 text-white py-2 px-8 rounded-full">เพิ่มรายการ</button>
+    </div> -->
+
+    <div>
+        <button onclick="showPopup()" id="addmenu" type="submit" class="float-right mx-9 mt-8 bg-blue-400 hover:bg-blue-500 text-white py-2 px-8 rounded-full">เพิ่มรายการ</button>
     </div>
 
     <div class="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 flex  justify-center items-center hidden" id="popup-overlay">
@@ -155,6 +161,7 @@
         </div>
 
     <script>
+        // upload image
         function displayImage(event) {
             const input = event.target;
             if (input.files && input.files[0]) {
@@ -172,24 +179,72 @@
             }
         }
 
-        function showInput(){
-            var selectElement = document.getElementById('selection');
-            var inputElement = document.getElementById('inputField');
-
-            if(selectElement.value === 'size'){
-                inputElement.style.display = 'block';
-            } else{
-                inputElement.style.display = 'none';
+        // input size
+        const cupSizeSelect = document.getElementById('cupSize');
+        const inputForm = document.getElementById('inputForm');
+        const input1 = document.getElementById('input1');
+        const input2 = document.getElementById('input2');
+        const input3 = document.getElementById('input3');
+        const add = document.getElementById('addmenu');
+        cupSizeSelect.addEventListener('change', function() {
+            const selectedValue = this.value;
+            input1.classList.add('hidden');
+            input2.classList.add('hidden');
+            input3.classList.add('hidden');
+            
+            if (selectedValue === '12oz') {
+                input1.classList.remove('hidden');
+            } else if (selectedValue === '16oz') {
+                input2.classList.remove('hidden');
+            } else if (selectedValue === '20oz') {
+                input3.classList.remove('hidden');
             }
-        }
+        });
 
-        function showPopup() {
-            document.getElementById("popup-overlay").classList.remove("hidden");
-        }
+        add.addEventListener('click', function(event) {
+    event.preventDefault();
+    
+    // ตรวจสอบว่ามีการกรอกข้อมูลในฟอร์มขนาดครบหรือไม่
+    const inputValue = input1.value && input2.value && input3.value;
+
+    if (inputValue) {
+        document.getElementById("popup-overlay").classList.remove("hidden");
+    } else {
+        alert('กรุณากรอกข้อมูลให้ครบ');
+    }
+});
+
+        // add.addEventListener(function(event) {
+        //     event.preventDefault();
+            
+        //     // ตรวจสอบว่ามีการกรอกตัวเลขหรือไม่
+        //     const inputValue = input1.value && input2.value && input3.value;
+        //     if (!inputValue) {
+        //         alert('กรุณากำหนดราคาค่ะ');
+        //         return;
+        //     }
+            
+        //     // แสดงข้อความเมื่อสร้างรายการอาหารสำเร็จ
+        //     alert('สร้างรายการอาหารสำเร็จ');
+        // });
+        // function showInput(){
+        //     var selectElement = document.getElementById('selection');
+        //     var inputElement = document.getElementById('inputField');
+
+        //     if(selectElement.value === 'size'){
+        //         inputElement.style.display = 'block';
+        //     } else{
+        //         inputElement.style.display = 'none';
+        //     }
+        // }
+
+        // function showPopup() {
+        //     document.getElementById("popup-overlay").classList.remove("hidden");
+        // }
         
-        function hidePopup() {
-            document.getElementById("popup-overlay").classList.add("hidden");
-        }
+        // function hidePopup() {
+        //     document.getElementById("popup-overlay").classList.add("hidden");
+        // }
     </script>
 </body>
 </html>
